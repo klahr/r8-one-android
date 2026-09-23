@@ -169,10 +169,11 @@ for abi in $ABIS; do
 
 	libs="$OUT/jniLibs/$abi"
 	mkdir -p "$libs"
-	cp "$work/sdl/lib/libSDL3.so" "$libs/"
+	# Stripped here: Gradle cannot, as it is not told which NDK built them
+	"$BIN/llvm-strip" -o "$libs/libSDL3.so" "$work/sdl/lib/libSDL3.so"
 	# Shipped rather than linked in: meson names -lc++ itself, and on the NDK
 	# that is the shared one whatever the driver is told
-	cp "$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/$triple/libc++_shared.so" "$libs/"
+	"$BIN/llvm-strip" -o "$libs/libc++_shared.so" "$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/$triple/libc++_shared.so"
 	"$BIN/llvm-strip" -o "$libs/libmain.so" "$work/qdos/libmain.so"
 done
 
