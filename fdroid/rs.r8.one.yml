@@ -1,4 +1,3 @@
-# Draft for fdroiddata, as metadata/rs.r8.one.yml.
 Categories:
   - Science & Education
 License: GPL-3.0-or-later
@@ -22,8 +21,9 @@ Builds:
     gradle:
       - yes
     scandelete:
-      # A prebuilt archive in Quadrate's http module, which is not built here
       - external/quadrate/stdlib/http/lib
+      - external/quadrate/tests/fuzz/corpus
+      - external/SDL/Xcode
     build: ANDROID_NDK_HOME=$$NDK$$ R8_ABIS="arm64-v8a x86_64" ../build.sh
     ndk: r28c
 

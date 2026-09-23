@@ -55,6 +55,19 @@ cp -r "$QUADRATE_DIR/subprojects/packagefiles/u8t/." "$QUADRATE_DIR/subprojects/
 
 mkdir -p "$OUT"
 
+# Reconfigured when it is already there, so option changes are picked up; set
+# up afresh otherwise. Meson 1.0, which Debian bookworm has, refuses --wipe on
+# a directory that does not exist yet.
+meson_setup() {
+	local build="$1"
+	shift
+	if [ -d "$build/meson-private" ]; then
+		meson setup "$build" "$@" --reconfigure >/dev/null 2>&1 || meson setup "$build" "$@" --wipe
+	else
+		meson setup "$build" "$@"
+	fi
+}
+
 for abi in $ABIS; do
 	case "$abi" in
 	arm64-v8a) triple=aarch64-linux-android cpu_family=aarch64 cpu=armv8-a ;;
@@ -75,7 +88,8 @@ for abi in $ABIS; do
 		cpp = '$BIN/$triple$API-clang++'
 		ar = '$BIN/llvm-ar'
 		strip = '$BIN/llvm-strip'
-		pkg-config = 'pkg-config'
+		# The older spelling: meson before 1.3 knows no other
+		pkgconfig = 'pkg-config'
 
 		[built-in options]
 		c_link_args = [$PAGE_ARGS]
@@ -115,8 +129,7 @@ for abi in $ABIS; do
 		-Dstdlib_modules=math
 		-Dwerror=false
 	)
-	meson setup "$work/quadrate" "$QUADRATE_DIR" "${quadrate_opts[@]}" --reconfigure >/dev/null 2>&1 ||
-		meson setup "$work/quadrate" "$QUADRATE_DIR" "${quadrate_opts[@]}" --wipe
+	meson_setup "$work/quadrate" "$QUADRATE_DIR" "${quadrate_opts[@]}"
 	meson compile -C "$work/quadrate" interp qc math rt_static u8t
 
 	# Staged under the names and layout qdos's meson.build links against.
@@ -150,8 +163,7 @@ for abi in $ABIS; do
 		-Dquadrate_dist="$stage"
 	)
 	export PKG_CONFIG_LIBDIR="$work/sdl/lib/pkgconfig"
-	meson setup "$work/qdos" "$QDOS_DIR" "${qdos_opts[@]}" --reconfigure >/dev/null 2>&1 ||
-		meson setup "$work/qdos" "$QDOS_DIR" "${qdos_opts[@]}" --wipe
+	meson_setup "$work/qdos" "$QDOS_DIR" "${qdos_opts[@]}"
 	meson compile -C "$work/qdos" main
 	unset PKG_CONFIG_LIBDIR
 
