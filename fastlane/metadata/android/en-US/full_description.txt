@@ -1,0 +1,9 @@
+r8 One is the QDOS calculator on your phone: the same shell, keypad and display as the homebuilt hardware it was designed for.
+
+The calculator is RPN. Digits build a number, Enter pushes it, and an operator applies at once. Its input language is Quadrate, a stack language, so the same keypad that adds two numbers can declare a function, loop, and run whole programs.
+
+* A persistent stack and 100 registers, kept when the app is closed
+* Functions written at the prompt or in the built-in editor
+* A Y= page with six slots, graphs, trace and 3D surfaces
+* Apps: folders of Quadrate, with optional native modules
+* No network access, no ads, no tracking

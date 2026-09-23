@@ -1,0 +1,33 @@
+# Draft for fdroiddata, as metadata/rs.r8.one.yml.
+Categories:
+  - Science & Education
+License: GPL-3.0-or-later
+SourceCode: https://github.com/quadrate-language/r8-one-android
+IssueTracker: https://github.com/quadrate-language/r8-one-android/issues
+
+AutoName: r8 One
+
+RepoType: git
+Repo: https://github.com/quadrate-language/r8-one-android.git
+
+Builds:
+  - versionName: 0.1.0
+    versionCode: 1
+    commit: v0.1.0
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y meson ninja-build cmake pkg-config
+    gradle:
+      - yes
+    scandelete:
+      # A prebuilt archive in Quadrate's http module, which is not built here
+      - external/quadrate/stdlib/http/lib
+    build: ANDROID_NDK_HOME=$$NDK$$ R8_ABIS="arm64-v8a x86_64" ../build.sh
+    ndk: r28c
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.1.0
+CurrentVersionCode: 1

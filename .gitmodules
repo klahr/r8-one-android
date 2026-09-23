@@ -1,0 +1,12 @@
+[submodule "external/qdos"]
+	path = external/qdos
+	url = https://github.com/quadrate-language/qdos.git
+[submodule "external/quadrate"]
+	path = external/quadrate
+	url = https://github.com/quadrate-language/quadrate.git
+[submodule "external/libu8t"]
+	path = external/libu8t
+	url = https://github.com/klahr/libu8t.git
+[submodule "external/SDL"]
+	path = external/SDL
+	url = https://github.com/libsdl-org/SDL.git

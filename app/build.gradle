@@ -1,0 +1,42 @@
+plugins {
+    id 'com.android.application'
+}
+
+// Where build.sh leaves the native libraries
+def r8Native = project.findProperty('r8Native') ?: "${rootDir}/build/native"
+
+android {
+    namespace = 'rs.r8.one'
+    compileSdk = 35
+
+    defaultConfig {
+        applicationId = 'rs.r8.one'
+        minSdk = 24
+        targetSdk = 35
+        versionCode = 1
+        versionName = '0.1.0'
+    }
+
+    sourceSets.main {
+        // SDLActivity must be the Java half of the very SDL it loads
+        java.srcDirs += "${rootDir}/external/SDL/android-project/app/src/main/java"
+        jniLibs.srcDirs = ["${r8Native}/jniLibs"]
+        // assets/system and assets/user, as the firmware installs them
+        assets.srcDirs = ["${rootDir}/external/qdos/programs"]
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled = false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    lint {
+        abortOnError = false
+    }
+}

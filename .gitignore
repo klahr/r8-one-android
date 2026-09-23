@@ -1,0 +1,7 @@
+# Native and Gradle build output
+build/
+app/build/
+
+# Gradle state and the SDK path Android Studio writes
+.gradle/
+local.properties
