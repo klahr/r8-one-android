@@ -45,6 +45,8 @@ public class QdosActivity extends SDLActivity {
             Os.setenv("QDOS_SYSTEM_STORE", system.getPath(), true);
             Os.setenv("QDOS_STORE", user.getPath(), true);
             Os.setenv("QDOS_INBOX", inbox.getPath(), true);
+            // Modules are opened from copies here: nothing maps out of the inbox
+            Os.setenv("QDOS_NATIVE_CACHE", new File(getCodeCacheDir(), "natives").getPath(), true);
         } catch (IOException | ErrnoException e) {
             Log.e(TAG, "setting up the stores", e);
         }
